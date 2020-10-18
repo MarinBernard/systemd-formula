@@ -1,5 +1,15 @@
 # Changelog
 
+# 0.18.0 (2020-10-18)
+
+### Features
+
+- **resolved**:
+  Pillar config data were migrated to standard data types, such as
+  lists, strings and booleans. The state now handles the rendering of
+  these data in a format compatible with resolved config file.
+
+
 # [0.17.0](https://github.com/saltstack-formulas/systemd-formula/compare/v0.16.0...v0.17.0) (2020-09-19)
 
 

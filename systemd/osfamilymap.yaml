@@ -15,7 +15,7 @@ Debian:
     - python3-systemd
   resolved:
     pkg: libnss-resolve
-    resolv_target: /run/systemd/resolve/resolv.conf
+    resolv_target: /run/systemd/resolve/stub-resolv.conf
 
 RedHat:
   pkgs_libs:
@@ -24,7 +24,7 @@ RedHat:
     - systemd-python
   resolved:
     pkg: systemd-resolved
-    resolv_target: /run/systemd/resolve/resolv.conf
+    resolv_target: /run/systemd/resolve/stub-resolv.conf
   networkd:
     pkg: systemd-networkd
 

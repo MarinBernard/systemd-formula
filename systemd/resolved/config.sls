@@ -28,16 +28,46 @@ resolved:
     - strict: True
     - sections:
         Resolve:
-          DNS: {{ config.DNS | yaml }}
-          FallbackDNS: {{ config.FallbackDNS | yaml }}
-          Domains: {{ config.Domains | yaml }}
-          LLMNR: {{ config.LLMNR | yaml }}
-          MulticastDNS: {{ config.MulticastDNS | yaml }}
-          DNSSEC: {{ config.DNSSEC | yaml }}
-          DNSOverTLS: {{ config.DNSOverTLS | yaml }}
-          Cache: {{ config.Cache | yaml }}
-          DNSStubListener: {{ config.DNSStubListener | yaml }}
-          ReadEtcHosts: {{ config.ReadEtcHosts | yaml }}
+          DNS: >-
+            {%  if config.servers.primary -%}
+            {{    config.servers.primary | join(' ') }}
+            {%- else -%}
+            {{    '' }}
+            {%- endif %}
+          FallbackDNS: >-
+            {%  if config.servers.secondary -%}
+            {{    config.servers.secondary | join(' ') }}
+            {%- else -%}
+            {{    '' }}
+            {%- endif %}
+          Domains: >-
+            {%  if config.search_suffixes -%}
+            {{    config.search_suffixes | join(' ') }}
+            {%- else -%}
+            {{    '' }}
+            {%- endif %}
+          LLMNR: >-
+            {{ 'yes' if config.features.llmnr else 'no' }}
+          MulticastDNS: >-
+            {{ 'yes' if config.features.multicast_dns else 'no' }}
+          DNSSEC: >-
+            {%  if config.features.dnssec -%}
+            {%-   if config.features.dnssec_downgrading -%}
+            {{      'allow-downgrading' }}
+            {%-   else -%}
+            {{      'yes' }}
+            {%-   endif -%}
+            {%- else -%}
+            {{    'no' }}
+            {%- endif %}
+          DNSOverTLS: >-
+            {{ 'yes' if config.features.dns_over_tls else 'no' }}
+          Cache: >-
+            {{ 'yes' if config.features.caching else 'no' }}
+          DNSStubListener: >-
+            {{ 'yes' if config.features.dns_stub_listener else 'no' }}
+          ReadEtcHosts: >-
+            {{ 'yes' if config.features.read_host_file else 'no' }}
     {%- endif %}
     - listen_in:
       - service: resolved

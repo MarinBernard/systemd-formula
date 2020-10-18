@@ -28,18 +28,21 @@ systemd:
     config_source: file
     pkg: {}
     resolv_file: /etc/resolv.conf
-    resolv_target: /usr/lib/systemd/resolv.conf
+    resolv_target: /run/systemd/resolve/stub-resolv.conf
     config:
-      DNS: ''
-      FallbackDNS: 8.8.8.8 8.8.4.4 2001:4860:4860::8888 2001:4860:4860::8844
-      Domains: ''
-      LLMNR: 'no'
-      MulticastDNS: 'no'
-      DNSSEC: 'allow-downgrade'
-      DNSOverTLS: 'off'
-      Cache: 'yes'
-      DNSStubListener: 'yes'
-      ReadEtcHosts: 'yes'
+      servers:
+        primary: []
+        secondary: []
+      search_suffixes: []
+      features:
+        llmnr: false
+        multicast_dns: false
+        dnssec: true
+        dnssec_downgrading: true
+        dns_over_tls: false
+        caching: true
+        dns_stub_listener: true
+        read_host_file: true
 
   journald:
     config_source: file
