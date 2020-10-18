@@ -1,8 +1,9 @@
 include:
   - systemd.reload
 
-{%- from "systemd/map.jinja" import systemd with context %}
-{%- from "systemd/libtofs.jinja" import files_switch with context %}
+{%- set  sls_path = "systemd" -%}
+{%- from sls_path + "/map.jinja" import systemd with context %}
+{%- from sls_path + "/libtofs.jinja" import files_switch with context %}
 
 {%- set timesyncd = systemd.get('timesyncd', {}) %}
 {%- set timezone = timesyncd.get('timezone', 'UTC') %}
@@ -16,6 +17,7 @@ timesyncd:
   pkg.installed:
     - name: {{ timesyncd.pkg }}
   {%- endif %}
+
   {%- if timesyncd.config_source == 'file' %}
   file.managed:
     - name: /etc/systemd/timesyncd.conf
@@ -28,6 +30,7 @@ timesyncd:
                               use_subpath=True
                               )
               }}
+
   {%- elif timesyncd.config_source == 'pillar' %}
   ini.options_present:
     - name: /etc/systemd/timesyncd.conf
@@ -35,24 +38,37 @@ timesyncd:
     - strict: True
     - sections:
         Time:
-          NTP: {{ config.NTP | yaml }}
-          FallbackNTP: {{ config.FallbackNTP | yaml }}
-          RootDistanceMaxSec: {{ config.RootDistanceMaxSec | yaml }}
-          PollIntervalMinSec: {{ config.PollIntervalMinSec | yaml }}
-          PollIntervalMaxSec: {{ config.PollIntervalMaxSec | yaml }}
+          NTP: >-
+            {%  if config.servers.primary -%}
+            {{    config.servers.primary | join(' ') }}
+            {%- else -%}
+            {{    '' }}
+            {%- endif %}
+          FallbackNTP: >-
+            {%  if config.servers.secondary -%}
+            {{    config.servers.secondary | join(' ') }}
+            {%- else -%}
+            {{    '' }}
+            {%- endif %}
+          RootDistanceMaxSec: {{ config.max_root_distance | int }}
+          PollIntervalMinSec: {{ config.poll_interval.min | int }}
+          PollIntervalMaxSec: {{ config.poll_interval.max | int }}
     {%- endif %}
     - listen_in:
       - service: timesyncd
     - watch_in:
       - cmd: timesyncd
+  
   cmd.wait:
     - name: timedatectl set-ntp true
     - runas: root
+  
   service.running:
     - name: systemd-timesyncd
     - enable: True
     - require:
       - cmd: reload_systemd_configuration
+  
   timezone.system:
     - name: {{ timezone }}
 

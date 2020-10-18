@@ -1,5 +1,14 @@
 # Changelog
 
+# 0.20.0 (2020-10-18)
+
+### Features
+
+- **timesyncd**:
+  Pillar config data were migrated to standard data types, such as
+  lists, strings and booleans. The state now handles the rendering of
+  these data in a format compatible with timesyncd config file.
+
 # 0.19.0 (2020-10-18)
 
 ### Features

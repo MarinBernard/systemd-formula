@@ -131,7 +131,6 @@ systemd:
               A2hzCTMjJPJ8LbqF6dsV6DoBQzgul0sGIcGOYl7OyQdXfZ57relSQageu\
               +ipAdTTJ25AsRTAoub8ONGcLmqrAmRLKBP1dfwhYB4N7knNnulqQxA+Uk\
               1ihz0="
-
           # DS trust anchor
           # Require 'tag', 'salgo' and 'dalgo' subkeys
           - domain: domain.local
@@ -148,17 +147,24 @@ systemd:
               49aac11d7b6f6446702e54a1607371607a1a41855200fd2ce1cdde32f\
               24e8fb5"
 
-
   ## timesyncd
   timesyncd:
     timezone: 'UTC'
     config_source: pillar
     config:
-      NTP: 0.europe.pool.ntp.org 1.europe.pool.ntp.org 2.europe.pool.ntp.org
-      FallbackNTP: 0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org
-      RootDistanceMaxSec: 5
-      PollIntervalMinSec: 32
-      PollIntervalMaxSec: 2048
+      servers:
+        primary:
+          - 0.europe.pool.ntp.org
+          - 1.europe.pool.ntp.org
+          - 2.europe.pool.ntp.org
+        secondary:
+          - 0.pool.ntp.org 
+          - 1.pool.ntp.org
+          - 2.pool.ntp.org
+      max_root_distance: 5
+      poll_interval:
+        min: 32
+        max: 2048
 
   ## networkd
   networkd:
