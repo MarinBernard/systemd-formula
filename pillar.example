@@ -108,6 +108,46 @@ systemd:
         caching: true
         dns_stub_listener: true
         read_host_file: true
+    trust_anchors:
+      positive:
+        my_set_1:
+          # DNSKEY trust anchor
+          # Require 'flags', 'proto' and 'algo' subkeys.
+          - domain: domain.local
+            class: IN
+            type: DNSKEY
+            # Key flags
+            flags: 257
+            # Key protocol
+            proto: 3
+            # Key algorithm
+            algo: 8
+            # Key data (base64)
+            data: "\
+              AwEAAagAIKlVZrpC6Ia7gEzahOR+9W29euxhJhVVLOyQbSEW0O8gcCjFF\
+              VQUTf6v58fLjwBd0YI0EzrAcQqBGCzh/RStIoO8g0NfnfL2MTJRkxoXbf\
+              DaUeVPQuYEhg37NZWAJQ9VnMVDxP/VHL496M/QZxkjf5/Efucp2gaDX6R\
+              S6CXpoY68LsvPVjR0ZSwzz1apAzvN9dlzEheX7ICJBBtuA6G3LQpzW5hO\
+              A2hzCTMjJPJ8LbqF6dsV6DoBQzgul0sGIcGOYl7OyQdXfZ57relSQageu\
+              +ipAdTTJ25AsRTAoub8ONGcLmqrAmRLKBP1dfwhYB4N7knNnulqQxA+Uk\
+              1ihz0="
+
+          # DS trust anchor
+          # Require 'tag', 'salgo' and 'dalgo' subkeys
+          - domain: domain.local
+            class: IN
+            type: DS
+            # Key tag
+            tag:  19036
+            # Signature algorithm
+            salgo: 8
+            # Digest algorithm
+            dalgo: 2
+            # Key fingerprint (hex)
+            data: "\
+              49aac11d7b6f6446702e54a1607371607a1a41855200fd2ce1cdde32f\
+              24e8fb5"
+
 
   ## timesyncd
   timesyncd:

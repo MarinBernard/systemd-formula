@@ -27,8 +27,10 @@ systemd:
   resolved:
     config_source: file
     pkg: {}
-    resolv_file: /etc/resolv.conf
-    resolv_target: /run/systemd/resolve/stub-resolv.conf
+    paths:
+      resolv_file: /etc/resolv.conf
+      resolv_target: /run/systemd/resolve/stub-resolv.conf
+      dnssec_trust_anchors_d: /etc/dnssec-trust-anchors.d
     config:
       servers:
         primary: []
@@ -43,6 +45,8 @@ systemd:
         caching: true
         dns_stub_listener: true
         read_host_file: true
+    trust_anchors:
+      positive: {}
 
   journald:
     config_source: file

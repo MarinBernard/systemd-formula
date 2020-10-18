@@ -1,0 +1,23 @@
+{% for anchor in anchors -%}
+{%- if anchor['type'] == 'DNSKEY' -%}
+  {{
+    anchor['domain'] ~ ' ' ~
+    anchor['class'] ~ ' ' ~
+    anchor['type'] ~ ' ' ~
+    anchor['flags'] ~ ' ' ~
+    anchor['proto'] ~ ' ' ~
+    anchor['algo'] ~ ' ' ~
+    anchor['data']
+  }}
+{%- elif anchor['type'] == 'DS' -%}
+  {{
+    anchor['domain'] ~ ' ' ~
+    anchor['class'] ~ ' ' ~
+    anchor['type'] ~ ' ' ~
+    anchor['tag'] ~ ' ' ~
+    anchor['salgo'] ~ ' ' ~
+    anchor['dalgo'] ~ ' ' ~
+    anchor['data']
+  }}
+{%- endif %}
+{% endfor %}

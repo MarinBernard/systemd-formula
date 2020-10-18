@@ -1,5 +1,12 @@
 # Changelog
 
+# 0.19.0 (2020-10-18)
+
+### Features
+
+- **resolved**:
+  Support for positive trust anchors.
+
 # 0.18.0 (2020-10-18)
 
 ### Features

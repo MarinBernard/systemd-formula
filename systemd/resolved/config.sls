@@ -77,8 +77,8 @@ resolved:
 
 resolv.conf:
   file.symlink:
-    - name: {{ resolved.resolv_file }}
-    - target: {{ resolved.resolv_target }}
+    - name: {{ resolved.paths.resolv_file }}
+    - target: {{ resolved.paths.resolv_target }}
     - force: True
     - backupname: /etc/resolv.conf.bak
     - listen_in:
