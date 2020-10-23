@@ -1,5 +1,14 @@
 # Changelog
 
+# 0.21.0 (2020-10-23)
+
+### Features
+
+- **timesyncd**:
+  The 'ReadEtcHosts' config key was introduced with systemd 240. The
+  formula now ensures the installed systemd version is >= 240 before
+  trying to configure this key.
+
 # 0.20.0 (2020-10-18)
 
 ### Features

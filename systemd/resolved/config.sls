@@ -4,6 +4,9 @@
 {%- set resolved = systemd.get('resolved', {}) %}
 {%- set config = resolved.get('config', {}) %}
 
+{%- set version = salt['pkg.version']('systemd') %}
+{%- set major_version = (version.split('-'))[0] | int %}
+
 resolved:
   {%- if resolved.pkg %}
   pkg.installed:
@@ -66,8 +69,10 @@ resolved:
             {{ 'yes' if config.features.caching else 'no' }}
           DNSStubListener: >-
             {{ 'yes' if config.features.dns_stub_listener else 'no' }}
+      {%- if major_version >= 240 %}
           ReadEtcHosts: >-
             {{ 'yes' if config.features.read_host_file else 'no' }}
+      {%- endif %}
     {%- endif %}
     - listen_in:
       - service: resolved
